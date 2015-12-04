@@ -20,4 +20,4 @@ I have a lot more information on the website below, however please report bugs h
 http://www.bridgemysql.com/
 
 ## Help Out
-Want to write tests, improve documentation, etc? Let me know!
+Want to write tests, improve documentation, etc? Let me know! I'm rolling out this code mostly implemented, because I find that it'll be super helpful, and most of the functions that do not operate have very low occurances on a GitHub search anyway.
