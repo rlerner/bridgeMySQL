@@ -15,11 +15,10 @@ MySQL	================= Improved
 - Maintainer: Robert Lerner                 -
 -             http://www.robert-lerner.com  -
 ---------------------------------------------
-- Version: 0.0.1-alpha1 / 2015-03-25        -
+- Version: 0.1.0 / 2015-12-4   semver.org   -
 ---------------------------------------------
 
 Visit the project, update your version, and report bugs: http://www.bridgemysql.com/
-
 */
 
 //Configuration -- May not work with some software packages.
@@ -28,8 +27,7 @@ $GLOBALS['bridgeMysql']['config'] = [
 
 	];
 
-if (!function_exists('mysql_connect'))
-	{
+if (!function_exists('mysql_connect')) {
 	function mysql_affected_rows($link=null) {
 		$link = mysql_bridge_last($link);
 		if ($GLOBALS['bridgeMysql']['connection'][$link]['mysqli']->errno!=0)
@@ -47,8 +45,7 @@ if (!function_exists('mysql_connect'))
 		if ($GLOBALS['bridgeMysql']['connection'][$link]['persistent'])
 			return true;
 
-		if (!isset($GLOBALS['bridgeMysql']['connection'][$link]))
-			{
+		if (!isset($GLOBALS['bridgeMysql']['connection'][$link])) {
 			trigger_error('--get error for closing non-existing link',E_USER_WARNING);
 			return false;
 			}
@@ -59,27 +56,21 @@ if (!function_exists('mysql_connect'))
 		}
 
 	function mysql_connect($server=null,$username=null,$password=null,$new_link=false,$client_flags=0,$persistent=false) {
-		if (!ini_get('sql.safe_mode'))
-			{
-			if ($server===null)
-				{
+		if (!ini_get('sql.safe_mode')) {
+			if ($server===null) {
 				$server = ini_get('mysql.default_host');
 				if ($server=='')
 					$server = 'localhost:3306';
 				}
-			if ($username===null)
-				{
+			if ($username===null) {
 				$username = ini_get('mysql.default_user');
 				if ($username=='')
 					$username = get_current_user();
 				}
-			if ($password===null)
-				{
+			if ($password===null) {
 				$password = ini_get('mysql.default_password');
 				}
-			}
-		else
-			{ //Handle safe mode
+			} else { //Handle safe mode
 			$server = 'localhost:3306';
 			$username = get_current_user();
 			$password = ini_get('mysql.default_password');
@@ -88,10 +79,8 @@ if (!function_exists('mysql_connect'))
 			}
 
 		//Check if an identical connection already exists, and if new_link is false. If so, return that connection handle.
-		if (!$new_link && is_array($GLOBALS['bridgeMysql']['connection']))
-			{
-			foreach ($GLOBALS['bridgeMysql']['connection'] as $k=>$v)
-				{
+		if (!$new_link && is_array($GLOBALS['bridgeMysql']['connection'])) {
+			foreach ($GLOBALS['bridgeMysql']['connection'] as $k=>$v) {
 				if (
 					$GLOBALS['bridgeMysql']['connection'][$k]['server'] == $server
 					&& $GLOBALS['bridgeMysql']['connection'][$k]['username'] == $username
@@ -102,8 +91,7 @@ if (!function_exists('mysql_connect'))
 			}
 
 		//Attempt Connection
-		if (!$mysqli = new MySQLi($server,$username,$password))
-			{
+		if (!$mysqli = new MySQLi($server,$username,$password)) {
 			$GLOBALS['bridgeMysql']['conError'] = $mysqli->connect_error;
 			return false;
 			}
@@ -159,8 +147,7 @@ if (!function_exists('mysql_connect'))
 
 	function mysql_error($link=null) {
 		//TODO: Verify Connection Error Presentation
-		if ($GLOBALS['bridgeMysql']['conError']!='')
-			{
+		if ($GLOBALS['bridgeMysql']['conError']!='') {
 			$x = $GLOBALS['bridgeMysql']['conError'];
 			$GLOBALS['bridgeMysql']['conError'] = '';
 			return $x;
@@ -266,8 +253,7 @@ if (!function_exists('mysql_connect'))
 		}
 
 	function mysql_get_client_info() {
-		if ($GLOBALS['bridgeMysql']['config']['client_version_lie']!='')
-			{
+		if ($GLOBALS['bridgeMysql']['config']['client_version_lie']!='') {
 			return $GLOBALS['bridgeMysql']['config']['client_version_lie'];
 			}
 
@@ -329,8 +315,7 @@ if (!function_exists('mysql_connect'))
 		return mysql_connect($server,$username,$password,false,$client_flags,true);
 		}
 
-	function mysql_ping($link=null) //TODO: Automatic reconnection disabled after a certain MySQL version. See PHP docs, and implement here? Or does MySQLi do that too?
-		{
+	function mysql_ping($link=null) { //TODO: Automatic reconnection disabled after a certain MySQL version. See PHP docs, and implement here? Or does MySQLi do that too?
 		$link = mysql_bridge_last($link);
 		return $GLOBALS['bridgeMysql']['connection'][$link]['mysqli']->ping();
 		}
@@ -355,14 +340,12 @@ if (!function_exists('mysql_connect'))
 		return $GLOBALS['bridgeMysql']['connection'][$link]['mysqli']->real_escape_string($string);
 		}
 
-	function mysql_result($result,$number,$field=0) //TEST: Testing with numeric, and textual field ID.
-		{
+	function mysql_result($result,$number,$field=0) { //TEST: Testing with numeric, and textual field ID.
 		$GLOBALS['bridgeMysql']['resultset'][$result]->data_seek($number);
 		return mysql_fetch_array($GLOBALS['bridgeMysql']['resultset'][$result]);
 		}
 
-	function mysql_select_db($database,$link=null) //TODO: Return query result? Or true/false?, Or is this the same?
-		{
+	function mysql_select_db($database,$link=null) {//TODO: Return query result? Or true/false?, Or is this the same?
 		return mysql_query('USE '.$database,$link);
 		}
 
@@ -478,8 +461,7 @@ if (!function_exists('mysql_connect'))
 		}
 
 	//Bridge Specific Functions
-	function mysql_bridge_debug()
-		{
+	function mysql_bridge_debug() {
 		echo "<pre>";
 		print_r($GLOBALS['bridgeMysql']);
 		echo "</pre>";
@@ -487,14 +469,10 @@ if (!function_exists('mysql_connect'))
 	//The MySQL library supports not passing a link, so we must determine the last called link.
 	//If there is no connection, then the spec shows to auto-create a connection with no
 	//parameters. Code Reuse, baby.
-	function mysql_bridge_last($link=null)
-		{
+	function mysql_bridge_last($link=null) {
 		//If the link is not specified, get the most recently created link.
 		if ($link===null)
 			$link = count($GLOBALS['bridgeMysql']['connection'])-1;
-		//if ($link==-1)
-//			$link = mysql_connect(); //TODO: Uncomment
 		return $link;
 		}
-
 	}
