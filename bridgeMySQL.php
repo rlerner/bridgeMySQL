@@ -120,7 +120,7 @@ if (!function_exists('mysql_connect')) {
 		return $GLOBALS['bridgeMysql']['resultset'][$result]->data_seek($row_number);
 		}
 
-	function mysql_db_name($x=null,$x=null,$x=null) {
+	function mysql_db_name($x=null,$y=null,$z=null) {
 		//TODO: Unsupported Function
 		//This seems to be an unused function, no results for it in GitHub, poor documentation on php.net,
 		//and I've never used it. So for now, it's "passively" unsupported.
