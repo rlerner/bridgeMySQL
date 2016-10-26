@@ -15,7 +15,7 @@ MySQL	================= Improved
 - Maintainer: Robert Lerner                 -
 -             http://www.robert-lerner.com  -
 ---------------------------------------------
-- Version: 0.1.0 / 2015-12-4   semver.org   -
+- Version: 0.1.1 / 2015-12-4   semver.org   -
 ---------------------------------------------
 
 Visit the project, update your version, and report bugs: http://www.bridgemysql.com/
