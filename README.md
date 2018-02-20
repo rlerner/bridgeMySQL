@@ -1,23 +1,34 @@
 # bridgeMySQL
-Enables Traditional mysql_ functions in PHP7, on systems where MySQLi is available.
+A workaround for the removal of legacy `mysql_*` functions in PHP7+.
 
-## About
-With the release of PHP7, mysql_query, mysql_connect, and other mysql_* functions are removed. Several orginazations may desire to leverage PHP7 enhancmenets or patches while still supporting legacy code.
+## Requirements
+This script routes legacy `mysql_*` functions to MySQLi functions, therefore the MySQLi extension is required.
 
-This allows you to do that.
+On Windows, inside of PHP.INI:
+```ini
+;Remove semicolon on the following line:
+;extension=php_mysqli.php
+```
 
-## Caution
-Not all functions are completely implemented, and those that are may have bugs. Please test this code in your environment before using in production. Usage is at your own risk.
+On Debian:
+```bash
+apt-get install php-mysql
+```
+
+## Word of Advise
+This code has been used on many production systems without issue, however a database abstraction layer such as this is a critical piece of functionality. Please verify that the functions you require appear supported with this script and test accordingly. Obviously, this is to be used at your own risk.
 
 ## Installation
-Please see the most current installation information here: http://www.bridgemysql.com/installation/
+You can simply:
+
+```php
+require_once "bridgeMySQL.php";
+```
+
+Or even prepend the file inside of PHP.INI:
+```ini
+auto_prepend=/path/to/bridgeMySQL.php
+```
 
 ## Ew
 Yes, it uses globals. This is a hack made to get you through the process of modernizing your code.
-
-## Website
-I have a lot more information on the website below, however please report bugs here on GitHub.
-http://www.bridgemysql.com/
-
-## Help Out
-Want to write tests, improve documentation, etc? Let me know! I'm rolling out this code mostly implemented, because I find that it'll be super helpful, and most of the functions that do not operate have very low occurances on a GitHub search anyway.
